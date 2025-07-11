@@ -1,6 +1,16 @@
 all:
   hosts:
     server1:
-      ansible_host: 192.168.56.10  
-      ansible_user: vagrant           
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa 
+      ansible_host: 192.168.56.10
+      ansible_user: vagrant
+      ansible_ssh_private_key_file: .vagrant/machines/server1/virtualbox/private_key
+      ansible_python_interpreter: /usr/bin/python3
+    server2:
+      ansible_host: 192.168.56.11
+      ansible_user: vagrant
+      ansible_ssh_private_key_file: .vagrant/machines/server2/virtualbox/private_key
+    server3:
+      ansible_host: 192.168.56.12
+      ansible_user: vagrant
+      ansible_ssh_private_key_file: .vagrant/machines/server3/virtualbox/private_key
+

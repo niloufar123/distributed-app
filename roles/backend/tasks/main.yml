@@ -1,0 +1,11 @@
+- name: Install Node.js and npm
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - nodejs
+      - npm
+
+

@@ -1,0 +1,14 @@
+- hosts: server1
+  become: yes
+  roles:
+    - backend
+    
+- hosts: server2
+  become: yes
+  roles:
+    - mysql
+   
+- hosts: server3
+  become: yes
+  roles:
+    - minio
