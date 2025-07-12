@@ -8,4 +8,35 @@
       - nodejs
       - npm
 
+- name: Create backend directory
+  file:
+    path: /opt/courses-backend
+    state: directory
+    mode: '0755'
+    
+    
+- name: Copy backend code
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0755'
+  with_items:
+    - { src: 'files/server.js', dest: '/opt/courses-backend/server.js' }
+    - { src: 'files/package.json', dest: '/opt/courses-backend/package.json' }
+    
+- name: Install Node.js dependencies
+  command: npm install
+  args:
+    chdir: /opt/courses-backend
+    
+
+    
+- name: Run backend application in background
+  shell: nohup node /opt/courses-backend/server.js > /var/log/backend.log 2>&1 &
+  args:
+    chdir: /opt/courses-backend
+
+
+
+
 
