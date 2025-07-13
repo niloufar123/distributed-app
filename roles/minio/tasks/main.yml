@@ -34,7 +34,7 @@
       - "9001:9001"
     env:
       MINIO_ROOT_USER: "minioadmin"
-      MINIO_ROOT_PASSWORD: "123"
+      MINIO_ROOT_PASSWORD: "minIOAdmin@123"
     command: server /data --console-address ":9001"
     volumes:
       - /mnt/data/minio:/data
