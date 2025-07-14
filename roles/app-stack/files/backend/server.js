@@ -36,13 +36,20 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 app.get('/courses', async (req, res) => {
-  const [courses] = await db.execute('SELECT id, name FROM courses');
-  res.json({ courses });
+  const courses = await db.collection('courses').find({}).toArray();
+    res.json({ courses });
 });
-
+app.get('/init', async (req, res) => {
+  await db.collection('courses').insertMany([
+    { name: 'Introduction to Python', description: 'A beginner course on Python programming' },
+    { name: 'Web Development Basics', description: 'Learn HTML, CSS, and JavaScript' },
+  ]);
+  res.json({ message: 'Courses initialized' });
+});
 (async () => {
   if (!await minioClient.bucketExists(bucketName)) {
     await minioClient.makeBucket(bucketName);
   }
   app.listen(3000, () => console.log('Server running on port 3000'));
 })();
+process.on('exit', () => client.close());

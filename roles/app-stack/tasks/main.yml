@@ -1,0 +1,75 @@
+- name: Install Docker and Docker Compose
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - docker.io
+      - docker-compose
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create app directory
+  file:
+    path: /opt/app-stack
+    state: directory
+    mode: '0755'
+
+- name: Copy Docker Compose file
+  copy:
+    src: files/docker-compose.yml
+    dest: /opt/app-stack/docker-compose.yml
+    mode: '0644'
+
+- name:  backend directory 
+  file:
+    path: /opt/app-stack/backend
+    state: directory
+    mode: '0755'
+
+- name: Copy backend code
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  with_items:
+    - { src: 'files/backend/server.js', dest: '/opt/app-stack/backend/server.js' }
+    - { src: 'files/backend/package.json', dest: '/opt/app-stack/backend/package.json' }
+    - { src: 'files/backend/Dockerfile', dest: '/opt/app-stack/backend/Dockerfile' }
+
+
+- name: Create frontend directory
+  file:
+    path: /opt/app-stack/frontend
+    state: directory
+    mode: '0755'
+
+- name:  frontend/src directory 
+  file:
+    path: /opt/app-stack/frontend/src
+    state: directory
+    mode: '0755'
+    
+- name: Copy frontend code
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  with_items:
+    - { src: 'files/frontend/package.json', dest: '/opt/app-stack/frontend/package.json' }
+    - { src: 'files/frontend/App.tsx', dest: '/opt/app-stack/frontend/src/App.tsx' }
+    - { src: 'files/frontend/index.css', dest: '/opt/app-stack/frontend/src/index.css' }
+    - { src: 'files/frontend/tailwind.config.js', dest: '/opt/app-stack/frontend/tailwind.config.js' }
+    - { src: 'files/frontend/Dockerfile', dest: '/opt/app-stack/frontend/Dockerfile' }
+
+
+
+- name: Start app stack with Docker Compose
+  command: docker-compose up -d
+  args:
+    chdir: /opt/app-stack

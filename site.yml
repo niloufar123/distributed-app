@@ -1,8 +1,7 @@
 - hosts: server1
   become: yes
   roles:
-    - backend
-    - frontend
+    - app-stack
     
 - hosts: server2
   become: yes

@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - MINIO_ENDPOINT=192.168.56.10:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minIOAdmin@123
+      - MYSQL_URL=192.168.56.11/courses
+    volumes:
+      - backend-data:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+
+
+volumes:
+  backend-data:
+  frontend-data:
