@@ -1,0 +1,71 @@
+- name: Install Node.js and npm
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - nodejs
+      - npm
+
+- name: Create frontend directory
+  file:
+    path: /opt/courses-frontend
+    state: directory
+    mode: '0755'
+
+- name: Initialize Vite React TS project
+  command: npm create vite@latest . -- --template react-ts
+  args:
+    chdir: /opt/courses-frontend
+    creates: /opt/courses-frontend/package.json
+
+- name: Install dependencies (React + Redux + Tailwind)
+  command: npm install
+  args:
+    chdir: /opt/courses-frontend
+
+- name: Install Redux Toolkit and React-Redux
+  command: npm install @reduxjs/toolkit react-redux
+  args:
+    chdir: /opt/courses-frontend
+
+- name: Install Tailwind CSS
+  command: npm install -D tailwindcss postcss autoprefixer
+  args:
+    chdir: /opt/courses-frontend
+
+- name: Initialize Tailwind CSS config
+  command: npx tailwindcss init -p
+  args:
+    chdir: /opt/courses-frontend
+
+- name: Copy React app source files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  with_items:
+      - { src: 'files/App.tsx', dest: '/opt/courses-frontend/src/App.tsx' }
+      - { src: 'files/main.tsx', dest: '/opt/courses-frontend/src/main.tsx' }
+      - { src: 'files/index.css', dest: '/opt/courses-frontend/src/index.css' }
+      - { src: 'files/store.ts', dest: '/opt/courses-frontend/src/store.ts' }
+      - { src: 'files/apiSlice.ts', dest: '/opt/courses-frontend/src/api/apiSlice.ts' }
+      - { src: 'files/tailwind.config.js', dest: '/opt/courses-frontend/tailwind.config.js' }
+
+
+- name: Build frontend
+  command: npm run build
+  args:
+    chdir: /opt/courses-frontend
+
+- name: Install serve for static serving
+  npm:
+    name: serve
+    global: yes
+
+- name: Serve the build folder
+  command: serve -s build -l 3000
+  args:
+    chdir: /opt/learning-frontend
+    daemon: yes

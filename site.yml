@@ -2,6 +2,7 @@
   become: yes
   roles:
     - backend
+    - frontend
     
 - hosts: server2
   become: yes

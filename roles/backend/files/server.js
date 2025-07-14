@@ -18,13 +18,13 @@ const minioClient = new Minio.Client({
 });
 const bucketName = 'courses-materials';
 
-
 const db = mysql.createPool({
   host: '192.168.56.11',
-  user: 'root',
-  password: '123',
-  database: 'courses',
+  user: 'nodeuser',
+  password: '123456',
+  database: 'coursedb',
 });
+
 
 app.use(express.json());
 
