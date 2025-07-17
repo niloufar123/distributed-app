@@ -62,10 +62,10 @@
     mode: '0644'
   with_items:
     - { src: 'files/frontend/package.json', dest: '/opt/app-stack/frontend/package.json' }
-    - { src: 'files/frontend/App.tsx', dest: '/opt/app-stack/frontend/src/App.tsx' }
-    - { src: 'files/frontend/index.css', dest: '/opt/app-stack/frontend/src/index.css' }
+    - { src: 'files/frontend/src', dest: '/opt/app-stack/frontend/' }
     - { src: 'files/frontend/tailwind.config.js', dest: '/opt/app-stack/frontend/tailwind.config.js' }
     - { src: 'files/frontend/Dockerfile', dest: '/opt/app-stack/frontend/Dockerfile' }
+    - { src: 'files/frontend/public', dest: '/opt/app-stack/frontend/' }
 
 
 
