@@ -5,7 +5,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "5000:5000"
     environment:
       - MINIO_ENDPOINT=192.168.56.10:9000
       - MINIO_ACCESS_KEY=minioadmin
@@ -19,7 +19,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "3000:3000"
 
 
 volumes:
